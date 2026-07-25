@@ -19,6 +19,7 @@ import CompletedSetRow from "../components/CompletedSetRow";
 import RPESelector from "../components/RPESelector";
 import RestTimer from "../components/RestTimer";
 import { useAuthStore } from "../store/authStore";
+import { useProfileStore } from "../store/profileStore";
 import { useWorkoutSessionStore } from "../store/workoutSessionStore";
 import {
   addSet,
@@ -31,6 +32,7 @@ import {
 import { getLastPerformance } from "../services/progressService";
 import type { LastPerformanceSet } from "../services/progressService";
 import { takePhotoAndUpload } from "../services/photoService";
+import { preloadInterstitial, showInterstitialIfReady } from "../services/adService";
 import { colors } from "../lib/theme";
 import type { SessionExercise } from "../store/workoutSessionStore";
 
@@ -53,6 +55,7 @@ function groupByBlock(
 export default function WorkoutSessionScreen({ route, navigation }: Props) {
   const { workoutId } = route.params;
   const session = useAuthStore((state) => state.session);
+  const profile = useProfileStore((state) => state.profile);
   const insets = useSafeAreaInsets();
   const [isLoading, setIsLoading] = useState(true);
   const [isFinishing, setIsFinishing] = useState(false);
@@ -188,6 +191,7 @@ export default function WorkoutSessionScreen({ route, navigation }: Props) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       setRestTimerActive(false);
       setJustFinished(true);
+      if (!profile?.is_premium) preloadInterstitial();
     } catch (error) {
       Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
     } finally {
@@ -196,6 +200,7 @@ export default function WorkoutSessionScreen({ route, navigation }: Props) {
   };
 
   const leaveSession = () => {
+    if (!profile?.is_premium) showInterstitialIfReady();
     reset();
     navigation.popToTop();
   };
