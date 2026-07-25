@@ -12,4 +12,4 @@ export const colors = {
   danger: "#FF3B30",
 };
 
-export const APP_NAME = "Coach Relou";
+export const APP_NAME = "GoMuscu";

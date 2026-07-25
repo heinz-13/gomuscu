@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Coach Relou",
+    "name": "GoMuscu",
     "slug": "muscu-app",
     "version": "1.0.0",
     "scheme": "muscuapp",
@@ -31,7 +31,7 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "Coach Relou a besoin de l'appareil photo pour immortaliser tes séances.",
+          "cameraPermission": "GoMuscu a besoin de l'appareil photo pour immortaliser tes séances.",
           "microphonePermission": false
         }
       ],

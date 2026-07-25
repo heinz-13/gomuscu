@@ -23,7 +23,7 @@ export async function scheduleWorkoutReminder(date: Date, label: string): Promis
 
   return Notifications.scheduleNotificationAsync({
     content: {
-      title: "Coach Relou te réclame",
+      title: "GoMuscu te réclame",
       body: label,
     },
     trigger: {

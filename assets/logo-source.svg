@@ -1,0 +1,35 @@
+<svg width="100%" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Logo GoMuscu</title>
+<desc>Badge noir et blanc à double cercle contenant la silhouette d'un homme musclé en pose double-biceps, avec le mot-clic GoMuscu et une accroche en dessous.</desc>
+
+<circle cx="340" cy="205" r="150" fill="#151515"/>
+<circle cx="340" cy="205" r="136" fill="#FFFFFF"/>
+<circle cx="340" cy="205" r="122" fill="#151515"/>
+
+<polygon points="300,172 380,172 365,300 350,322 330,322 315,300" fill="#FFFFFF"/>
+<rect x="322" y="150" width="36" height="22" fill="#FFFFFF"/>
+
+<g>
+<line x1="380" y1="177" x2="430" y2="190" stroke="#FFFFFF" stroke-width="36" stroke-linecap="round"/>
+<circle cx="415" cy="176" r="24" fill="#FFFFFF"/>
+<circle cx="430" cy="190" r="18" fill="#FFFFFF"/>
+<line x1="430" y1="190" x2="400" y2="125" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round"/>
+<circle cx="400" cy="125" r="17" fill="#FFFFFF"/>
+<circle cx="380" cy="177" r="20" fill="#FFFFFF"/>
+</g>
+
+<g transform="translate(680,0) scale(-1,1)">
+<line x1="380" y1="177" x2="430" y2="190" stroke="#FFFFFF" stroke-width="36" stroke-linecap="round"/>
+<circle cx="415" cy="176" r="24" fill="#FFFFFF"/>
+<circle cx="430" cy="190" r="18" fill="#FFFFFF"/>
+<line x1="430" y1="190" x2="400" y2="125" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round"/>
+<circle cx="400" cy="125" r="17" fill="#FFFFFF"/>
+<circle cx="380" cy="177" r="20" fill="#FFFFFF"/>
+</g>
+
+<circle cx="340" cy="130" r="30" fill="#FFFFFF"/>
+
+<text x="340" y="418" text-anchor="middle" font-family="Arial Black, Helvetica, sans-serif" font-style="italic" font-size="64" font-weight="800"><tspan fill="#E4002B">Go</tspan><tspan fill="#151515">Muscu</tspan></text>
+
+<text x="340" y="452" text-anchor="middle" font-family="Arial Black, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing="2" fill="#151515">PAS DE PAUSE. PAS D'EXCUSE.</text>
+</svg>
