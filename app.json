@@ -42,6 +42,14 @@
           "androidAppId": "ca-app-pub-9897401906204484~5569631222",
           "iosAppId": "ca-app-pub-9897401906204484~2306127928"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "2.3.20"
+          }
+        }
       ]
     ],
     "extra": {
