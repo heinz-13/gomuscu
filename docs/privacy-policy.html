@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Politique de confidentialité — Coach Relou</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #5a5a5a;
+    --accent: #FF7A00;
+    --border: #e5e5e5;
+    --surface: #f7f7f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0D0D0D;
+      --text: #f2f2f2;
+      --muted: #a8a8a8;
+      --border: #2a2a2a;
+      --surface: #171717;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .updated {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-top: 36px;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+  p, li {
+    font-size: 15px;
+    color: var(--text);
+  }
+  ul { padding-left: 20px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th { color: var(--muted); font-weight: 600; }
+  a { color: var(--accent); }
+  .contact {
+    display: inline-block;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Politique de confidentialité — Coach Relou</h1>
+  <p class="updated">Dernière mise à jour : 26 juillet 2026</p>
+
+  <p>Coach Relou est une application de suivi de musculation développée et éditée par un développeur indépendant (ci-après "l'éditeur"). Cette page explique quelles données sont collectées, pourquoi, et comment les faire supprimer.</p>
+
+  <h2>1. Qui est responsable de vos données ?</h2>
+  <p>L'éditeur de l'application, développeur individuel (pas de société enregistrée). Pour toute question ou demande relative à vos données :</p>
+  <p class="contact">📧 sarlin.mathieu@gmail.com</p>
+
+  <h2>2. Quelles données sont collectées ?</h2>
+  <div class="card">
+    <table>
+      <tr><th>Catégorie</th><th>Détail</th></tr>
+      <tr><td>Compte</td><td>Adresse email, mot de passe (ou identité Google si connexion via Google)</td></tr>
+      <tr><td>Profil</td><td>Prénom, nom, date de naissance, poids, taille</td></tr>
+      <tr><td>Préférences d'entraînement</td><td>Objectif, fréquence souhaitée, lieu et équipement disponible, jours préférés, niveau d'expérience, zones sensibles / blessures à éviter</td></tr>
+      <tr><td>Données de séance</td><td>Exercices réalisés, séries, répétitions, poids soulevé, ressenti (RPE)</td></tr>
+      <tr><td>Photo de séance</td><td>Photo optionnelle prise en fin de séance, stockée de façon privée</td></tr>
+    </table>
+  </div>
+  <p>Les données de poids, taille, niveau et zones sensibles/blessures sont considérées comme des <strong>données de santé</strong> au sens du RGPD (article 9). Elles ne sont collectées qu'avec votre consentement explicite lors de l'inscription, et uniquement pour faire fonctionner l'application (génération de séances adaptées).</p>
+
+  <h2>3. Pourquoi ces données sont-elles collectées ?</h2>
+  <ul>
+    <li>Créer et sécuriser votre compte</li>
+    <li>Générer des séances d'entraînement adaptées à votre profil et vos contraintes physiques</li>
+    <li>Suivre votre progression dans le temps (historique, records personnels)</li>
+    <li>Vous envoyer, si vous l'activez, un rappel de séance programmée (notification locale sur votre téléphone — aucune donnée n'est envoyée à un serveur de notification tiers)</li>
+  </ul>
+  <p>Aucune donnée n'est vendue, louée ou utilisée à des fins publicitaires. L'application ne contient actuellement aucun SDK publicitaire ni outil d'analyse/tracking tiers.</p>
+
+  <h2>4. Où vos données sont-elles stockées ?</h2>
+  <p>Les données sont hébergées chez <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a>, notre prestataire de base de données et d'authentification, avec chiffrement en transit (HTTPS) et un accès restreint à chaque compte (chaque utilisateur ne peut voir que ses propres données). Si vous vous connectez via Google, Google traite également vos identifiants de connexion conformément à sa propre politique de confidentialité.</p>
+
+  <h2>5. Combien de temps sont-elles conservées ?</h2>
+  <p>Vos données sont conservées tant que votre compte existe. Vous pouvez en demander la suppression à tout moment (voir section 7) ; elles sont alors effacées sous 30 jours.</p>
+
+  <h2>6. Vos droits</h2>
+  <p>Conformément au RGPD, vous disposez des droits suivants sur vos données :</p>
+  <ul>
+    <li><strong>Accès</strong> : obtenir une copie des données vous concernant</li>
+    <li><strong>Rectification</strong> : corriger des données inexactes (également possible directement dans l'app, écran Profil)</li>
+    <li><strong>Effacement</strong> : supprimer votre compte et toutes vos données</li>
+    <li><strong>Portabilité</strong> : récupérer vos données dans un format exploitable</li>
+    <li><strong>Opposition / retrait du consentement</strong> à tout moment</li>
+  </ul>
+
+  <h2>7. Comment supprimer votre compte ?</h2>
+  <p>Envoyez une demande à <span class="contact">sarlin.mathieu@gmail.com</span> depuis l'adresse email associée à votre compte. Vos données (profil, séances, photos) seront intégralement supprimées sous 30 jours.</p>
+
+  <h2>8. Âge minimum</h2>
+  <p>Coach Relou est destinée aux personnes âgées de 16 ans ou plus, notamment en raison de la nature des données collectées (poids, taille, informations de santé). L'application n'est pas destinée aux enfants de moins de 16 ans.</p>
+
+  <h2>9. Modifications de cette politique</h2>
+  <p>Cette politique peut évoluer avec l'application. Toute modification substantielle sera reflétée par la mise à jour de la date en haut de cette page.</p>
+
+  <h2>10. Contact</h2>
+  <p>Pour toute question sur cette politique ou vos données personnelles :</p>
+  <p class="contact">📧 sarlin.mathieu@gmail.com</p>
+</div>
+</body>
+</html>
