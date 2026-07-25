@@ -31,10 +31,17 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "Coach Relou a besoin de l'appareil photo pour immortaliser tes séances."
+          "cameraPermission": "Coach Relou a besoin de l'appareil photo pour immortaliser tes séances.",
+          "microphonePermission": false
         }
       ],
       "expo-notifications"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "58fd5244-984c-428c-8284-90a93825c302"
+      }
+    },
+    "owner": "mat131"
   }
 }
