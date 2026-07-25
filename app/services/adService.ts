@@ -1,16 +1,17 @@
 import { Platform } from "react-native";
 import { InterstitialAd, AdEventType, TestIds } from "react-native-google-mobile-ads";
 
-// Vrai ad unit Android (compte AdMob de l'utilisateur). Pas encore d'unité iOS créée.
+// Vraies ad units (compte AdMob de l'utilisateur), une par plateforme.
 const ANDROID_INTERSTITIAL_ID = "ca-app-pub-9897401906204484/8077329352";
+const IOS_INTERSTITIAL_ID = "ca-app-pub-9897401906204484/9993046253";
 
 // En dev, toujours des ID de test (Google suspend les comptes en cas de clics de test sur
-// de vraies unités) ; en prod, la vraie unité Android, et l'ID de test tant qu'iOS n'est pas configuré.
+// de vraies unités) ; en prod, la vraie unité de la plateforme courante.
 const INTERSTITIAL_UNIT_ID = __DEV__
   ? TestIds.INTERSTITIAL
   : Platform.OS === "android"
     ? ANDROID_INTERSTITIAL_ID
-    : TestIds.INTERSTITIAL;
+    : IOS_INTERSTITIAL_ID;
 
 let interstitial: InterstitialAd | null = null;
 let isLoaded = false;
