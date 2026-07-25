@@ -7,6 +7,7 @@ import { useProfileStore } from "../store/profileStore";
 import { useAuthStore } from "../store/authStore";
 import { signOut } from "../services/authService";
 import { updateProfile } from "../services/profileService";
+import { deleteAccount } from "../services/accountService";
 import { colors } from "../lib/theme";
 import type { ExperienceLevel, SensitiveZone } from "../lib/types";
 
@@ -40,6 +41,7 @@ export default function ProfileScreen() {
   );
   const [avoidZones, setAvoidZones] = useState<SensitiveZone[]>(profile?.avoid_zones ?? []);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (!profile) return null;
 
@@ -68,6 +70,32 @@ export default function ProfileScreen() {
       Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const confirmDeleteAccount = () => {
+    Alert.alert(
+      "Supprimer ton compte ?",
+      "Toutes tes données (profil, séances, photos) seront définitivement supprimées. Impossible à annuler.",
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Supprimer définitivement",
+          style: "destructive",
+          onPress: handleDeleteAccount,
+        },
+      ]
+    );
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteAccount();
+      await signOut();
+    } catch (error) {
+      Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
+      setIsDeleting(false);
     }
   };
 
@@ -131,9 +159,24 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       )}
 
-      <TouchableOpacity style={styles.logoutButton} onPress={() => signOut()}>
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => signOut()}
+        disabled={isDeleting}
+      >
         <Ionicons name="log-out-outline" size={18} color={colors.danger} />
         <Text style={styles.logoutButtonText}>Se tirer (temporairement)</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.deleteAccountButton}
+        onPress={confirmDeleteAccount}
+        disabled={isDeleting}
+      >
+        <Ionicons name="trash-outline" size={16} color={colors.textMuted} />
+        <Text style={styles.deleteAccountButtonText}>
+          {isDeleting ? "Suppression en cours..." : "Supprimer mon compte définitivement"}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -248,5 +291,18 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: colors.danger,
     fontWeight: "600",
+  },
+  deleteAccountButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 6,
+    paddingVertical: 14,
+    alignItems: "center",
+    marginTop: 8,
+  },
+  deleteAccountButtonText: {
+    color: colors.textMuted,
+    fontWeight: "500",
+    fontSize: 13,
   },
 });
