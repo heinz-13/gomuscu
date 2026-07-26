@@ -22,15 +22,22 @@ function loadNextInterstitial() {
 
   const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
     isLoaded = true;
+    console.log("[adService] interstitial loaded, ready to show");
+  });
+
+  const unsubscribeError = interstitial.addAdEventListener(AdEventType.ERROR, (error) => {
+    console.log("[adService] interstitial failed to load:", error);
   });
 
   const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
     isLoaded = false;
     unsubscribeLoaded();
+    unsubscribeError();
     unsubscribeClosed();
     loadNextInterstitial();
   });
 
+  console.log("[adService] requesting interstitial:", INTERSTITIAL_UNIT_ID);
   interstitial.load();
 }
 
@@ -39,6 +46,7 @@ export function preloadInterstitial() {
 }
 
 export function showInterstitialIfReady() {
+  console.log("[adService] showInterstitialIfReady, isLoaded =", isLoaded);
   if (interstitial && isLoaded) {
     interstitial.show();
   }

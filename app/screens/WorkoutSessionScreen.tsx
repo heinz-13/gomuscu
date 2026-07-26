@@ -182,6 +182,7 @@ export default function WorkoutSessionScreen({ route, navigation }: Props) {
     }
     if (!showGlobalRpe) {
       setShowGlobalRpe(true);
+      if (!profile?.is_premium) preloadInterstitial();
       return;
     }
 
@@ -191,7 +192,6 @@ export default function WorkoutSessionScreen({ route, navigation }: Props) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       setRestTimerActive(false);
       setJustFinished(true);
-      if (!profile?.is_premium) preloadInterstitial();
     } catch (error) {
       Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
     } finally {
