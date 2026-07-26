@@ -223,6 +223,13 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
     return (
       <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
         <DailyCheckinForm onSubmit={handleSubmitCheckin} isSubmitting={isSubmittingCheckin} />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.cancelButton}
+          disabled={isSubmittingCheckin}
+        >
+          <Text style={styles.cancelButtonText}>J'ai eu peur, j'annule</Text>
+        </TouchableOpacity>
       </View>
     );
   }

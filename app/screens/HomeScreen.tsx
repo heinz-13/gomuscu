@@ -214,7 +214,6 @@ export default function HomeScreen({ navigation }: Props) {
 
       <GlobalFormeCard checkin={checkin} />
     </ScrollView>
-
   );
 }
 
