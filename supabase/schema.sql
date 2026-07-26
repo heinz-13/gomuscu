@@ -242,3 +242,27 @@ on conflict (name) do update set
 update public.exercises set difficulty = 'debutant' where name = 'Dips triceps';
 
 NOTIFY pgrst, 'reload schema';
+
+-- 2026-07-26 : check-in de forme quotidien — influence le volume et le poids recommandé
+-- des séances générées. Une ligne par utilisateur par jour (upsert sur user_id+date).
+-- Sens des notes (1-10) : fatigue/haut_du_corps/bas_du_corps = 10 signifie "au plus mal"
+-- (très fatigué / très courbaturé) ; morale/motivation/sommeil = 10 signifie "au mieux".
+create table if not exists public.daily_checkins (
+  id             uuid primary key default gen_random_uuid(),
+  user_id        uuid not null references auth.users(id) on delete cascade,
+  date           date not null,
+  fatigue        smallint not null check (fatigue between 1 and 10),
+  morale         smallint not null check (morale between 1 and 10),
+  haut_du_corps  smallint not null check (haut_du_corps between 1 and 10),
+  bas_du_corps   smallint not null check (bas_du_corps between 1 and 10),
+  motivation     smallint not null check (motivation between 1 and 10),
+  sommeil        smallint not null check (sommeil between 1 and 10),
+  created_at     timestamptz not null default now(),
+  unique (user_id, date)
+);
+alter table public.daily_checkins enable row level security;
+create policy "daily_checkins_select_own" on public.daily_checkins for select using (auth.uid() = user_id);
+create policy "daily_checkins_insert_own" on public.daily_checkins for insert with check (auth.uid() = user_id);
+create policy "daily_checkins_update_own" on public.daily_checkins for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+NOTIFY pgrst, 'reload schema';

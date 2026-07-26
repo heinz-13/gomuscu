@@ -14,14 +14,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { MainStackParamList } from "../navigation/types";
 import ExerciseCard from "../components/ExerciseCard";
+import DailyCheckinForm from "../components/DailyCheckinForm";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { buildSessionPlan, commitPlan, THEME_LABELS } from "../services/generateService";
 import type { SessionPlan, SessionSlot, Theme } from "../services/generateService";
 import { listExercises } from "../services/exerciseService";
+import { listPersonalRecords } from "../services/progressService";
+import { getTodayCheckin, upsertTodayCheckin } from "../services/checkinService";
+import type { CheckinInput } from "../services/checkinService";
 import { setWorkoutNotification, toLocalDateString } from "../services/workoutService";
 import { scheduleWorkoutReminder } from "../services/notificationService";
-import type { Exercise, Workout } from "../lib/types";
+import type { DailyCheckin, Exercise, Workout } from "../lib/types";
 import { colors } from "../lib/theme";
 
 type Props = NativeStackScreenProps<MainStackParamList, "WorkoutPreview">;
@@ -64,6 +68,9 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
   const isToday = !targetDate || targetDate === toLocalDateString(new Date());
 
   const [exercises, setExercises] = useState<Exercise[] | null>(null);
+  const [personalRecords, setPersonalRecords] = useState<Record<string, number>>({});
+  const [checkin, setCheckin] = useState<DailyCheckin | null>(null);
+  const [isSubmittingCheckin, setIsSubmittingCheckin] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [plan, setPlan] = useState<SessionPlan>(EMPTY_PLAN);
   const [includeFinisher, setIncludeFinisher] = useState(true);
@@ -74,19 +81,40 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
 
   useEffect(() => {
     if (!session) return;
-    listExercises()
-      .then(setExercises)
+    Promise.all([
+      listExercises(),
+      listPersonalRecords(session.user.id),
+      isToday ? getTodayCheckin(session.user.id) : Promise.resolve(null),
+    ])
+      .then(([exerciseList, records, todayCheckin]) => {
+        setExercises(exerciseList);
+        setPersonalRecords(records);
+        setCheckin(todayCheckin);
+      })
       .catch((error) => {
         Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
         navigation.goBack();
       })
       .finally(() => setIsLoading(false));
-  }, [session, navigation]);
+  }, [session, navigation, isToday]);
+
+  const handleSubmitCheckin = async (input: CheckinInput) => {
+    if (!session) return;
+    setIsSubmittingCheckin(true);
+    try {
+      const saved = await upsertTodayCheckin(session.user.id, input);
+      setCheckin(saved);
+    } catch (error) {
+      Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
+    } finally {
+      setIsSubmittingCheckin(false);
+    }
+  };
 
   const handleSelectTheme = (theme: Theme) => {
     if (!profile || !exercises) return;
     setSelectedTheme(theme);
-    setPlan(buildSessionPlan(profile, exercises, theme));
+    setPlan(buildSessionPlan(profile, exercises, theme, personalRecords, checkin));
   };
 
   const handleChangeTheme = () => {
@@ -96,8 +124,8 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
 
   const handleRegenerate = useCallback(() => {
     if (!profile || !exercises || !selectedTheme) return;
-    setPlan(buildSessionPlan(profile, exercises, selectedTheme));
-  }, [profile, exercises, selectedTheme]);
+    setPlan(buildSessionPlan(profile, exercises, selectedTheme, personalRecords, checkin));
+  }, [profile, exercises, selectedTheme, personalRecords, checkin]);
 
   const handleConfirm = async () => {
     if (!session) return;
@@ -191,6 +219,14 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
     );
   }
 
+  if (isToday && !checkin) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
+        <DailyCheckinForm onSubmit={handleSubmitCheckin} isSubmitting={isSubmittingCheckin} />
+      </View>
+    );
+  }
+
   if (!selectedTheme) {
     return (
       <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
@@ -258,6 +294,7 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
                   </View>
                   <Text style={styles.target}>
                     {slot.setsCount} × {slot.targetReps} reps
+                    {slot.targetWeight > 0 ? ` — ${slot.targetWeight} kg conseillés` : ""}
                   </Text>
                 </View>
               ))}
@@ -279,7 +316,9 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
             <View style={[styles.slot, !includeFinisher && styles.finisherDisabled]}>
               <ExerciseCard exercise={plan.finisher.exercise} />
               <Text style={styles.target}>
-                {plan.finisher.setsCount} × {plan.finisher.targetReps} reps — pour ceux qui en veulent encore
+                {plan.finisher.setsCount} × {plan.finisher.targetReps} reps
+                {plan.finisher.targetWeight > 0 ? ` — ${plan.finisher.targetWeight} kg conseillés` : ""}
+                {" "}— pour ceux qui en veulent encore
               </Text>
             </View>
           </View>

@@ -78,3 +78,18 @@ export type WorkoutSetWithExercise = WorkoutSet & {
 export type WorkoutWithSets = Workout & {
   sets: WorkoutSetWithExercise[];
 };
+
+// Sens des notes (1-10) : fatigue/haut_du_corps/bas_du_corps -> 10 = au plus mal
+// (très fatigué / très courbaturé) ; morale/motivation/sommeil -> 10 = au mieux.
+export type DailyCheckin = {
+  id: string;
+  user_id: string;
+  date: string;
+  fatigue: number;
+  morale: number;
+  haut_du_corps: number;
+  bas_du_corps: number;
+  motivation: number;
+  sommeil: number;
+  created_at: string;
+};

@@ -121,6 +121,19 @@ export async function getTopPerformanceThisWeek(userId: string): Promise<TopPerf
   return { exerciseName: exercise.name, weight: data.poids_max, date: data.date_obtenu };
 }
 
+export async function listPersonalRecords(userId: string): Promise<Record<string, number>> {
+  const { data, error } = await supabase
+    .from("personal_records")
+    .select("exercise_id, poids_max")
+    .eq("user_id", userId);
+
+  if (error) throw error;
+
+  const map: Record<string, number> = {};
+  for (const row of data ?? []) map[row.exercise_id] = row.poids_max;
+  return map;
+}
+
 export async function getPersonalRecord(
   userId: string,
   exerciseId: string

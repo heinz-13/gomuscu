@@ -1,10 +1,19 @@
 import { addSet, createWorkout } from "./workoutService";
-import type { Exercise, ExerciseCategory, ExperienceLevel, Profile, Workout } from "../lib/types";
+import { computeGlobalForme } from "./checkinService";
+import type {
+  DailyCheckin,
+  Exercise,
+  ExerciseCategory,
+  ExperienceLevel,
+  Profile,
+  Workout,
+} from "../lib/types";
 
 export type SessionSlot = {
   exercise: Exercise;
   setsCount: number;
   targetReps: number;
+  targetWeight: number;
   blockLabel: string;
 };
 
@@ -27,6 +36,22 @@ const REP_SCHEME: Record<string, { setsCount: number; targetReps: number }> = {
   entretien: { setsCount: 3, targetReps: 12 },
   performance: { setsCount: 4, targetReps: 6 },
 };
+
+// Zone du corps sollicitée par thème, pour croiser avec les courbatures du check-in du jour.
+const THEME_ZONE: Record<Theme, "haut_du_corps" | "bas_du_corps"> = {
+  haut: "haut_du_corps",
+  dos: "haut_du_corps",
+  abdo_bras: "haut_du_corps",
+  bas: "bas_du_corps",
+};
+
+// Poids recommandé à partir du record personnel, via la formule de Brzycki (approximation
+// %1RM selon les répétitions visées), arrondi au 2.5 kg le plus proche.
+function recommendWeight(personalRecord: number | undefined, targetReps: number): number {
+  if (!personalRecord) return 0;
+  const raw = (personalRecord * (37 - targetReps)) / 36;
+  return Math.max(0, Math.round(raw / 2.5) * 2.5);
+}
 
 type ThemeSlot = { category: ExerciseCategory; preferCompound: boolean };
 
@@ -121,12 +146,21 @@ function pickExercise(
 export function buildSessionPlan(
   profile: Profile,
   exercises: Exercise[],
-  theme: Theme
+  theme: Theme,
+  personalRecords: Record<string, number> = {},
+  checkin: DailyCheckin | null = null
 ): SessionPlan {
   const template = THEME_TEMPLATES[theme];
   const scheme = REP_SCHEME[profile.objective ?? "entretien"] ?? REP_SCHEME.entretien;
   const eligible = exercises.filter((e) => isEligible(e, profile));
   const used = new Set<string>();
+
+  let setsCount = scheme.setsCount;
+  if (checkin) {
+    if (computeGlobalForme(checkin) <= 4) setsCount -= 1;
+    if (checkin[THEME_ZONE[theme]] >= 7) setsCount -= 1;
+    setsCount = Math.max(2, setsCount);
+  }
 
   const blocks: SessionSlot[] = [];
   template.forEach((slot, index) => {
@@ -136,8 +170,9 @@ export function buildSessionPlan(
     const position = index % 2 === 0 ? "A" : "B";
     blocks.push({
       exercise,
-      setsCount: scheme.setsCount,
+      setsCount,
       targetReps: scheme.targetReps,
+      targetWeight: recommendWeight(personalRecords[exercise.id], scheme.targetReps),
       blockLabel: `${blockIndex + 1}.${position}`,
     });
   });
@@ -150,6 +185,7 @@ export function buildSessionPlan(
         exercise: finisherExercise,
         setsCount: 3,
         targetReps: 20,
+        targetWeight: recommendWeight(personalRecords[finisherExercise.id], 20),
         blockLabel: "Bonus",
       }
     : null;
@@ -168,7 +204,15 @@ export async function commitPlan(
 
   for (const slot of slots) {
     for (let i = 1; i <= slot.setsCount; i++) {
-      await addSet(workout.id, slot.exercise.id, i, slot.targetReps, 0, null, slot.blockLabel);
+      await addSet(
+        workout.id,
+        slot.exercise.id,
+        i,
+        slot.targetReps,
+        slot.targetWeight,
+        null,
+        slot.blockLabel
+      );
     }
   }
 

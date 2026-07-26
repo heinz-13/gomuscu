@@ -20,6 +20,7 @@ import GoalProgressBar from "../components/GoalProgressBar";
 import WeekDayCircles from "../components/WeekDayCircles";
 import TopPerformanceCard from "../components/TopPerformanceCard";
 import RecentSessionsCarousel from "../components/RecentSessionsCarousel";
+import GlobalFormeCard from "../components/GlobalFormeCard";
 import type { DayInfo } from "../components/WeekDayCircles";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
@@ -34,8 +35,9 @@ import {
 import { getTopPerformanceThisWeek } from "../services/progressService";
 import type { TopPerformance } from "../services/progressService";
 import { cancelReminder } from "../services/notificationService";
+import { getTodayCheckin } from "../services/checkinService";
 import { colors } from "../lib/theme";
-import type { Frequency, Workout } from "../lib/types";
+import type { DailyCheckin, Frequency, Workout } from "../lib/types";
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<MainTabParamList, "Home">,
@@ -59,6 +61,7 @@ export default function HomeScreen({ navigation }: Props) {
   const [weekWorkouts, setWeekWorkouts] = useState<Workout[]>([]);
   const [topPerformance, setTopPerformance] = useState<TopPerformance | null>(null);
   const [recentWorkouts, setRecentWorkouts] = useState<Workout[]>([]);
+  const [checkin, setCheckin] = useState<DailyCheckin | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
 
@@ -77,6 +80,7 @@ export default function HomeScreen({ navigation }: Props) {
     listWeekWorkouts(userId).then(setWeekWorkouts).catch(() => {});
     getTopPerformanceThisWeek(userId).then(setTopPerformance).catch(() => {});
     listWorkouts(userId).then(setRecentWorkouts).catch(() => {});
+    getTodayCheckin(userId).then(setCheckin).catch(() => {});
   }, []);
 
   useFocusEffect(
@@ -208,23 +212,9 @@ export default function HomeScreen({ navigation }: Props) {
         onPress={(workoutId) => navigation.navigate("WorkoutDetail", { workoutId })}
       />
 
-      <View style={styles.shortcuts}>
-        <TouchableOpacity
-          style={styles.shortcut}
-          onPress={() => navigation.navigate("Historique")}
-        >
-          <Ionicons name="time-outline" size={22} color={colors.textPrimary} />
-          <Text style={styles.shortcutText}>Historique</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.shortcut}
-          onPress={() => navigation.navigate("Progression")}
-        >
-          <Ionicons name="stats-chart-outline" size={22} color={colors.textPrimary} />
-          <Text style={styles.shortcutText}>Progression</Text>
-        </TouchableOpacity>
-      </View>
+      <GlobalFormeCard checkin={checkin} />
     </ScrollView>
+
   );
 }
 
@@ -297,24 +287,5 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontWeight: "700",
     fontSize: 14,
-  },
-  shortcuts: {
-    flexDirection: "row",
-    gap: 12,
-    marginBottom: 24,
-  },
-  shortcut: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    borderRadius: 8,
-    paddingVertical: 16,
-    alignItems: "center",
-    gap: 6,
-  },
-  shortcutText: {
-    fontWeight: "600",
-    color: colors.textPrimary,
   },
 });
