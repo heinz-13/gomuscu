@@ -1,12 +1,20 @@
 import { useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import OnboardingStepChoice from "../components/OnboardingStepChoice";
 import { useProfileStore } from "../store/profileStore";
 import { useAuthStore } from "../store/authStore";
 import { signOut } from "../services/authService";
-import { updateProfile } from "../services/profileService";
+import { updateProfile, updateUsername } from "../services/profileService";
 import { deleteAccount } from "../services/accountService";
 import { colors } from "../lib/theme";
 import type { ExperienceLevel, SensitiveZone } from "../lib/types";
@@ -40,6 +48,7 @@ export default function ProfileScreen() {
     profile?.experience_level ?? null
   );
   const [avoidZones, setAvoidZones] = useState<SensitiveZone[]>(profile?.avoid_zones ?? []);
+  const [username, setUsername] = useState(profile?.username ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -52,19 +61,24 @@ export default function ProfileScreen() {
     );
   };
 
+  const usernameChanged = username.trim() !== (profile.username ?? "");
   const isDirty =
     experienceLevel !== profile.experience_level ||
     avoidZones.length !== (profile.avoid_zones ?? []).length ||
-    avoidZones.some((z) => !(profile.avoid_zones ?? []).includes(z));
+    avoidZones.some((z) => !(profile.avoid_zones ?? []).includes(z)) ||
+    usernameChanged;
 
   const handleSave = async () => {
     if (!session) return;
     setIsSaving(true);
     try {
-      const updated = await updateProfile(session.user.id, {
+      let updated = await updateProfile(session.user.id, {
         experience_level: experienceLevel,
         avoid_zones: avoidZones,
       });
+      if (usernameChanged) {
+        updated = await updateUsername(session.user.id, username.trim());
+      }
       setProfile(updated);
     } catch (error) {
       Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
@@ -125,6 +139,22 @@ export default function ProfileScreen() {
         <Row
           label="Abonnement"
           value={profile.is_premium ? "Premium (le vrai)" : "Gratuit (radin)"}
+        />
+      </View>
+
+      <View style={styles.choiceGroup}>
+        <Text style={styles.sectionTitle}>Nom d'utilisateur</Text>
+        <Text style={styles.helperText}>
+          Permet à tes amis de te retrouver pour créer ou rejoindre un groupe.
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="ex: mathieu75"
+          placeholderTextColor={colors.textMuted}
+          value={username}
+          onChangeText={setUsername}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </View>
 
@@ -262,6 +292,22 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.textPrimary,
     marginBottom: 10,
+  },
+  helperText: {
+    fontSize: 12,
+    color: colors.textMuted,
+    marginTop: -6,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: colors.textPrimary,
   },
   saveButton: {
     backgroundColor: colors.accent,

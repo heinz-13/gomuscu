@@ -7,6 +7,7 @@ export type MainTabParamList = {
   Home: undefined;
   Historique: undefined;
   Progression: undefined;
+  Groupes: undefined;
   Profil: undefined;
 };
 
@@ -16,4 +17,7 @@ export type MainStackParamList = {
   WorkoutDetail: { workoutId: string };
   ExercisePicker: undefined;
   WorkoutPreview: { targetDate?: string } | undefined;
+  GroupDetail: { groupId: string };
+  CardioPreview: { targetDate?: string } | undefined;
+  CardioSession: { cardioSessionId: string };
 };

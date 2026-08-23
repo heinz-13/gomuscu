@@ -266,3 +266,126 @@ create policy "daily_checkins_insert_own" on public.daily_checkins for insert wi
 create policy "daily_checkins_update_own" on public.daily_checkins for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 NOTIFY pgrst, 'reload schema';
+
+-- 2026-08-23 : Groupes (social) + Cardio — voir C:\Users\sarli\.claude\plans\cheerful-roaming-hejlsberg.md
+
+-- Username public/recherchable pour rejoindre des groupes
+alter table public.profiles add column if not exists username text unique;
+
+-- Thème mémorisé sur la séance (nécessaire pour le résumé affiché au groupe)
+alter table public.workouts add column if not exists theme text;
+
+-- Groupes
+create table if not exists public.groups (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  created_by uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.group_members (
+  group_id uuid not null references public.groups(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  joined_at timestamptz not null default now(),
+  primary key (group_id, user_id)
+);
+alter table public.groups enable row level security;
+alter table public.group_members enable row level security;
+
+-- security definer pour casser la récursion RLS (une policy sur group_members ne peut pas
+-- interroger group_members directement sans boucler) — bypass RLS via le propriétaire de la fonction.
+create or replace function public.is_group_member(p_group_id uuid, p_user_id uuid)
+returns boolean
+language sql security definer set search_path = public as $$
+  select exists (
+    select 1 from public.group_members where group_id = p_group_id and user_id = p_user_id
+  );
+$$;
+grant execute on function public.is_group_member(uuid, uuid) to authenticated;
+
+-- Un membre voit les groupes dont il fait partie (created_by en plus de is_group_member :
+-- au moment de la création, le créateur relit la ligne insérée avant d'être ajouté à group_members)
+create policy "groups_select_member" on public.groups for select using (
+  created_by = auth.uid() or public.is_group_member(id, auth.uid())
+);
+create policy "groups_insert_own" on public.groups for insert with check (created_by = auth.uid());
+create policy "group_members_select_same_group" on public.group_members for select using (
+  public.is_group_member(group_id, auth.uid())
+);
+create policy "group_members_insert_self_or_creator" on public.group_members for insert with check (
+  user_id = auth.uid() or exists (select 1 from public.groups g where g.id = group_id and g.created_by = auth.uid())
+);
+create policy "group_members_delete_self" on public.group_members for delete using (user_id = auth.uid());
+
+-- Recherche d'utilisateurs par username (jamais d'accès direct à la table profiles pour un autre user)
+create or replace function public.search_users_by_username(query text)
+returns table (id uuid, username text, first_name text)
+language sql security definer set search_path = public as $$
+  select id, username, first_name from public.profiles
+  where username ilike query || '%' and username is not null and id != auth.uid()
+  limit 20;
+$$;
+
+-- Résumé des séances du groupe (jamais le détail des séries/poids)
+create or replace function public.group_workout_summaries(p_group_id uuid, p_since date)
+returns table (user_id uuid, first_name text, username text, date date, theme text,
+               duration_min numeric, global_rpe int)
+language sql security definer set search_path = public as $$
+  select w.user_id, p.first_name, p.username, w.date, w.theme,
+         round(extract(epoch from (w.ended_at - w.started_at)) / 60), w.global_rpe
+  from public.workouts w
+  join public.profiles p on p.id = w.user_id
+  where w.status = 'terminee' and w.date >= p_since
+    and exists (
+      select 1 from public.group_members gm1
+      join public.group_members gm2 on gm1.group_id = gm2.group_id
+      where gm1.group_id = p_group_id and gm1.user_id = auth.uid() and gm2.user_id = w.user_id
+    );
+$$;
+
+-- Top PR de la semaine dans le groupe
+create or replace function public.group_top_prs(p_group_id uuid, p_since date)
+returns table (user_id uuid, first_name text, exercise_name text, poids_max numeric, date_obtenu date)
+language sql security definer set search_path = public as $$
+  select pr.user_id, p.first_name, e.name, pr.poids_max, pr.date_obtenu
+  from public.personal_records pr
+  join public.profiles p on p.id = pr.user_id
+  join public.exercises e on e.id = pr.exercise_id
+  where pr.date_obtenu >= p_since
+    and exists (
+      select 1 from public.group_members gm1
+      join public.group_members gm2 on gm1.group_id = gm2.group_id
+      where gm1.group_id = p_group_id and gm1.user_id = auth.uid() and gm2.user_id = pr.user_id
+    )
+  order by pr.date_obtenu desc;
+$$;
+grant execute on function public.search_users_by_username(text) to authenticated;
+grant execute on function public.group_workout_summaries(uuid, date) to authenticated;
+grant execute on function public.group_top_prs(uuid, date) to authenticated;
+
+-- Séances cardio (une table flexible couvrant les 4 types)
+create table if not exists public.cardio_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  date date not null,
+  type text not null check (type in ('fractionne','bronco','course_libre','custom')),
+  variant text,
+  status text not null default 'planifiee' check (status in ('planifiee','terminee')),
+  work_sec int,
+  rest_sec int,
+  rounds int,
+  target_distance_m int,
+  target_duration_min int,
+  actual_duration_sec int,
+  actual_distance_m int,
+  rpe int,
+  started_at timestamptz not null default now(),
+  ended_at timestamptz,
+  created_at timestamptz not null default now()
+);
+alter table public.cardio_sessions enable row level security;
+create policy "cardio_select_own" on public.cardio_sessions for select using (auth.uid() = user_id);
+create policy "cardio_insert_own" on public.cardio_sessions for insert with check (auth.uid() = user_id);
+create policy "cardio_update_own" on public.cardio_sessions for update using (auth.uid() = user_id);
+create policy "cardio_delete_own" on public.cardio_sessions for delete using (auth.uid() = user_id);
+
+NOTIFY pgrst, 'reload schema';

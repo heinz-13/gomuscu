@@ -18,6 +18,10 @@ import WorkoutSessionScreen from "../screens/WorkoutSessionScreen";
 import WorkoutDetailScreen from "../screens/WorkoutDetailScreen";
 import ExercisePickerScreen from "../screens/ExercisePickerScreen";
 import WorkoutPreviewScreen from "../screens/WorkoutPreviewScreen";
+import GroupsListScreen from "../screens/GroupsListScreen";
+import GroupDetailScreen from "../screens/GroupDetailScreen";
+import CardioPreviewScreen from "../screens/CardioPreviewScreen";
+import CardioSessionScreen from "../screens/CardioSessionScreen";
 import { colors } from "../lib/theme";
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -40,6 +44,7 @@ const TAB_ICONS: Record<keyof MainTabParamList, keyof typeof Ionicons.glyphMap> 
   Home: "barbell",
   Historique: "time",
   Progression: "stats-chart",
+  Groupes: "people",
   Profil: "person-circle",
 };
 
@@ -85,6 +90,7 @@ function MainTabsNavigator() {
       <MainTabs.Screen name="Home" component={HomeScreen} />
       <MainTabs.Screen name="Historique" component={HistoryScreen} />
       <MainTabs.Screen name="Progression" component={ProgressScreen} />
+      <MainTabs.Screen name="Groupes" component={GroupsListScreen} />
       <MainTabs.Screen name="Profil" component={ProfileScreen} />
     </MainTabs.Navigator>
   );
@@ -100,6 +106,9 @@ function MainNavigator() {
       <MainStackNav.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
       <MainStackNav.Screen name="ExercisePicker" component={ExercisePickerScreen} />
       <MainStackNav.Screen name="WorkoutPreview" component={WorkoutPreviewScreen} />
+      <MainStackNav.Screen name="GroupDetail" component={GroupDetailScreen} />
+      <MainStackNav.Screen name="CardioPreview" component={CardioPreviewScreen} />
+      <MainStackNav.Screen name="CardioSession" component={CardioSessionScreen} />
     </MainStackNav.Navigator>
   );
 }

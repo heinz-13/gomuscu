@@ -47,3 +47,14 @@ export async function updateProfile(
   if (error) throw error;
   return data;
 }
+
+export async function updateUsername(userId: string, username: string): Promise<Profile> {
+  try {
+    return await updateProfile(userId, { username });
+  } catch (error) {
+    if (error instanceof Object && "code" in error && error.code === "23505") {
+      throw new Error("Ce nom d'utilisateur est déjà pris.");
+    }
+    throw error;
+  }
+}

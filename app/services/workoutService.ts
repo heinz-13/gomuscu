@@ -67,10 +67,14 @@ export async function listWeekWorkouts(userId: string): Promise<Workout[]> {
   return data ?? [];
 }
 
-export async function createWorkout(userId: string, date?: string): Promise<Workout> {
+export async function createWorkout(
+  userId: string,
+  date?: string,
+  theme?: string
+): Promise<Workout> {
   const { data, error } = await supabase
     .from("workouts")
-    .insert({ user_id: userId, date: date ?? toLocalDateString(new Date()) })
+    .insert({ user_id: userId, date: date ?? toLocalDateString(new Date()), theme: theme ?? null })
     .select("*")
     .single();
 

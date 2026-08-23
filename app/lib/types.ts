@@ -11,6 +11,7 @@ export type Profile = {
   email: string | null;
   first_name: string | null;
   last_name: string | null;
+  username: string | null;
   birth_date: string | null;
   weight_kg: number | null;
   height_cm: number | null;
@@ -57,6 +58,7 @@ export type Workout = {
   global_rpe: number | null;
   photo_path: string | null;
   notification_id: string | null;
+  theme: string | null;
 };
 
 export type WorkoutSet = {
@@ -91,5 +93,65 @@ export type DailyCheckin = {
   bas_du_corps: number;
   motivation: number;
   sommeil: number;
+  created_at: string;
+};
+
+export type Group = {
+  id: string;
+  name: string;
+  created_by: string;
+  created_at: string;
+};
+
+export type GroupMember = {
+  group_id: string;
+  user_id: string;
+  joined_at: string;
+};
+
+export type UserSearchResult = {
+  id: string;
+  username: string;
+  first_name: string | null;
+};
+
+export type GroupWorkoutSummary = {
+  user_id: string;
+  first_name: string | null;
+  username: string | null;
+  date: string;
+  theme: string | null;
+  duration_min: number | null;
+  global_rpe: number | null;
+};
+
+export type GroupTopPr = {
+  user_id: string;
+  first_name: string | null;
+  exercise_name: string;
+  poids_max: number;
+  date_obtenu: string;
+};
+
+export type CardioType = "fractionne" | "bronco" | "course_libre" | "custom";
+export type CardioStatus = "planifiee" | "terminee";
+
+export type CardioSession = {
+  id: string;
+  user_id: string;
+  date: string;
+  type: CardioType;
+  variant: string | null;
+  status: CardioStatus;
+  work_sec: number | null;
+  rest_sec: number | null;
+  rounds: number | null;
+  target_distance_m: number | null;
+  target_duration_min: number | null;
+  actual_duration_sec: number | null;
+  actual_distance_m: number | null;
+  rpe: number | null;
+  started_at: string;
+  ended_at: string | null;
   created_at: string;
 };

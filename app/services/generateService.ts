@@ -197,9 +197,10 @@ export async function commitPlan(
   userId: string,
   plan: SessionPlan,
   includeFinisher: boolean,
-  date?: string
+  date?: string,
+  theme?: Theme
 ): Promise<Workout> {
-  const workout = await createWorkout(userId, date);
+  const workout = await createWorkout(userId, date, theme);
   const slots = includeFinisher && plan.finisher ? [...plan.blocks, plan.finisher] : plan.blocks;
 
   for (const slot of slots) {

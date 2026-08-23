@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -64,6 +65,7 @@ export default function HomeScreen({ navigation }: Props) {
   const [checkin, setCheckin] = useState<DailyCheckin | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
+  const [showGenerateChoice, setShowGenerateChoice] = useState(false);
 
   const goal = FREQUENCY_GOALS[profile?.current_frequency ?? "0"] ?? 0;
 
@@ -193,7 +195,7 @@ export default function HomeScreen({ navigation }: Props) {
 
           <TouchableOpacity
             style={styles.generateButton}
-            onPress={() => navigation.navigate("WorkoutPreview")}
+            onPress={() => setShowGenerateChoice(true)}
           >
             <Ionicons name="sparkles" size={16} color={colors.accent} />
             <Text style={styles.generateButtonText}>
@@ -204,6 +206,40 @@ export default function HomeScreen({ navigation }: Props) {
           </TouchableOpacity>
         </View>
       )}
+
+      <Modal visible={showGenerateChoice} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Muscu ou cardio ?</Text>
+            <TouchableOpacity
+              style={styles.modalOption}
+              onPress={() => {
+                setShowGenerateChoice(false);
+                navigation.navigate("WorkoutPreview");
+              }}
+            >
+              <Ionicons name="barbell" size={20} color={colors.accent} />
+              <Text style={styles.modalOptionText}>Musculation</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalOption}
+              onPress={() => {
+                setShowGenerateChoice(false);
+                navigation.navigate("CardioPreview");
+              }}
+            >
+              <Ionicons name="heart" size={20} color={colors.accent} />
+              <Text style={styles.modalOptionText}>Cardio</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalCancelButton}
+              onPress={() => setShowGenerateChoice(false)}
+            >
+              <Text style={styles.modalCancelText}>Annuler</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <TopPerformanceCard performance={topPerformance} />
 
@@ -286,5 +322,47 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontWeight: "700",
     fontSize: 14,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    padding: 24,
+  },
+  modalCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    padding: 20,
+    gap: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: colors.textPrimary,
+    marginBottom: 6,
+  },
+  modalOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surfaceAlt,
+    borderRadius: 10,
+    padding: 14,
+  },
+  modalOptionText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: colors.textPrimary,
+  },
+  modalCancelButton: {
+    alignItems: "center",
+    paddingVertical: 10,
+    marginTop: 4,
+  },
+  modalCancelText: {
+    color: colors.textMuted,
+    fontWeight: "600",
   },
 });

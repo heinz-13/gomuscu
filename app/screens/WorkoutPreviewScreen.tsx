@@ -131,7 +131,13 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
     if (!session) return;
     setIsCommitting(true);
     try {
-      const workout = await commitPlan(session.user.id, plan, includeFinisher, targetDate);
+      const workout = await commitPlan(
+        session.user.id,
+        plan,
+        includeFinisher,
+        targetDate,
+        selectedTheme ?? undefined
+      );
       if (isToday) {
         navigation.replace("WorkoutSession", { workoutId: workout.id });
       } else {
