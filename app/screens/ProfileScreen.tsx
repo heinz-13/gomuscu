@@ -139,7 +139,7 @@ export default function ProfileScreen() {
         <Row
           label="Abonnement"
           value={profile.is_premium ? "Premium (le vrai)" : "Gratuit (radin)"}
-          valueColor={profile.is_premium ? colors.premium : undefined}
+          valueColor={profile.is_premium ? colors.highlight : undefined}
         />
       </View>
 

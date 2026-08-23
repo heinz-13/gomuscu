@@ -128,7 +128,7 @@ export default function ProgressScreen() {
               <>
                 {record && (
                   <View style={styles.recordCard}>
-                    <Ionicons name="trophy" size={20} color={colors.accent} />
+                    <Ionicons name="trophy" size={20} color={colors.highlight} />
                     <Text style={styles.recordLabel}>Ton record perso</Text>
                     <Text style={styles.recordValue}>{record.weight} kg</Text>
                   </View>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   recordCard: {
     backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.highlight,
     borderRadius: 10,
     padding: 16,
     marginBottom: 16,
@@ -213,6 +213,6 @@ const styles = StyleSheet.create({
   recordValue: {
     fontSize: 28,
     fontWeight: "800",
-    color: colors.textPrimary,
+    color: colors.highlight,
   },
 });

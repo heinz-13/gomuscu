@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   badgePremium: {
-    backgroundColor: colors.premium,
+    backgroundColor: colors.highlight,
   },
   badgeText: {
     fontSize: 12,
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   badgeTextPremium: {
-    color: colors.premiumText,
+    color: colors.highlightText,
   },
   todayBlock: {
     marginBottom: 24,

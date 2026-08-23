@@ -146,7 +146,9 @@ export default function GroupDetailScreen({ route }: Props) {
                     <Text style={styles.rankName}>
                       {pr.first_name ?? "Quelqu'un"} — {pr.exercise_name}
                     </Text>
-                    <Text style={styles.rankValue}>{pr.poids_max} kg</Text>
+                    <Text style={[styles.rankValue, { color: colors.highlight }]}>
+                      {pr.poids_max} kg
+                    </Text>
                   </View>
                 ))
               )}

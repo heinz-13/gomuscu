@@ -1,5 +1,6 @@
-// Direction "Néon tamisé" — noir tirant sur le bleu-violet, orange réservé à l'action,
-// violet réservé au Premium (un seul rôle chacun, pas de couleur qui fait deux métiers).
+// Direction "Néon tamisé" — noir tirant sur le bleu-violet, orange réservé à l'action.
+// Violet = "highlight" : tout ce qui est spécial/mérité (Premium, records personnels) —
+// un rôle cohérent ("t'as quelque chose en plus"), pas un fourre-tout pour chaque accent secondaire.
 export const colors = {
   bg: "#0B0A10",
   surface: "#171420",
@@ -12,8 +13,8 @@ export const colors = {
   accentText: "#0B0A10",
   success: "#34C759",
   danger: "#FF3B30",
-  premium: "#8B5CF6",
-  premiumText: "#FFFFFF",
+  highlight: "#8B5CF6",
+  highlightText: "#FFFFFF",
 };
 
 export const APP_NAME = "GoMuscu";

@@ -12,7 +12,7 @@ export default function TopPerformanceCard({ performance }: Props) {
 
   return (
     <View style={styles.card}>
-      <Ionicons name="trophy" size={22} color={colors.accent} />
+      <Ionicons name="trophy" size={22} color={colors.highlight} />
       <View style={{ flex: 1 }}>
         <Text style={styles.label}>Top perf de la semaine</Text>
         <Text style={styles.value}>
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     borderWidth: 1,
-    borderColor: colors.accent,
+    borderColor: colors.highlight,
     backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 14,
