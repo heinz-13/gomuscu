@@ -394,16 +394,19 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginBottom: 8,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     marginBottom: 8,
     color: colors.textPrimary,
   },
   subtitle: {
     fontSize: 16,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     marginTop: 16,
     marginBottom: 4,
     color: colors.textSecondary,
@@ -437,6 +440,7 @@ const styles = StyleSheet.create({
     color: colors.accentText,
     fontSize: 16,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
   secondaryButton: {
     flex: 1,
@@ -450,6 +454,7 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
   },
 });

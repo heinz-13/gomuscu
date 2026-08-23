@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
     textTransform: "capitalize",
   },
@@ -95,5 +96,6 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
 });

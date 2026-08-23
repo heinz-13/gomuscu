@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     marginBottom: 16,
     color: colors.textPrimary,
   },
@@ -161,6 +162,7 @@ const styles = StyleSheet.create({
   cardioDate: {
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
     textTransform: "capitalize",
   },
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
   cardioBadgeText: {
     fontSize: 12,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.accent,
   },
 });

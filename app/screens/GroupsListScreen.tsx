@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
   },
   createButton: {
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
   },
   empty: {
@@ -222,6 +224,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
   },
   input: {
@@ -246,6 +249,7 @@ const styles = StyleSheet.create({
   modalCancelText: {
     color: colors.textMuted,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   modalConfirmButton: {
     flex: 1,
@@ -257,5 +261,6 @@ const styles = StyleSheet.create({
   modalConfirmText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
 });

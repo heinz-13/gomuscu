@@ -38,7 +38,7 @@ import type { TopPerformance } from "../services/progressService";
 import { cancelReminder } from "../services/notificationService";
 import { getTodayCheckin } from "../services/checkinService";
 import { getTodayCardioSession, listCardioSessions } from "../services/cardioService";
-import { colors } from "../lib/theme";
+import { colors, eyebrow } from "../lib/theme";
 import type { CardioSession, DailyCheckin, Frequency, Workout } from "../lib/types";
 
 type Mode = "muscu" | "cardio";
@@ -221,6 +221,7 @@ export default function HomeScreen({ navigation }: Props) {
         <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />
       ) : mode === "muscu" ? (
         <View style={styles.todayBlock}>
+          <Text style={styles.eyebrow}>Séance du jour</Text>
           {todayWorkout ? (
             <WorkoutListItem workout={todayWorkout} onPress={handleStart} />
           ) : (
@@ -259,6 +260,7 @@ export default function HomeScreen({ navigation }: Props) {
         </View>
       ) : (
         <View style={styles.todayBlock}>
+          <Text style={styles.eyebrow}>Séance du jour</Text>
           {todayCardio ? (
             <Text style={styles.emptyToday}>
               Cardio du jour : {CARDIO_TYPE_LABELS[todayCardio.type]}
@@ -330,6 +332,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
   },
   badge: {
@@ -344,6 +347,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textSecondary,
   },
   badgeTextPremium: {
@@ -351,6 +355,11 @@ const styles = StyleSheet.create({
   },
   todayBlock: {
     marginBottom: 24,
+  },
+  eyebrow: {
+    ...eyebrow,
+    color: colors.accent,
+    marginBottom: 8,
   },
   emptyToday: {
     color: colors.textMuted,
@@ -368,6 +377,7 @@ const styles = StyleSheet.create({
   startButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
   generateButton: {
@@ -384,6 +394,7 @@ const styles = StyleSheet.create({
   generateButtonText: {
     color: colors.accent,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 14,
   },
   modeToggle: {
@@ -408,6 +419,7 @@ const styles = StyleSheet.create({
   modeButtonText: {
     fontSize: 13,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textMuted,
   },
   modeButtonTextActive: {

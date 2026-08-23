@@ -15,6 +15,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { MainStackParamList } from "../navigation/types";
 import ExerciseCard from "../components/ExerciseCard";
 import DailyCheckinForm from "../components/DailyCheckinForm";
+import Chip from "../components/Chip";
 import { useAuthStore } from "../store/authStore";
 import { useProfileStore } from "../store/profileStore";
 import { buildSessionPlan, commitPlan, THEME_LABELS } from "../services/generateService";
@@ -305,10 +306,12 @@ export default function WorkoutPreviewScreen({ navigation, route }: Props) {
                       <ExerciseCard exercise={slot.exercise} />
                     </View>
                   </View>
-                  <Text style={styles.target}>
-                    {slot.setsCount} × {slot.targetReps} reps
-                    {slot.targetWeight > 0 ? ` — ${slot.targetWeight} kg conseillés` : ""}
-                  </Text>
+                  <View style={styles.chipRow}>
+                    <Chip label={`${slot.setsCount}×${slot.targetReps}`} tone="accent" />
+                    {slot.targetWeight > 0 && (
+                      <Chip label={`${slot.targetWeight} kg conseillés`} />
+                    )}
+                  </View>
                 </View>
               ))}
             </View>
@@ -386,6 +389,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
   },
   subtitle: {
@@ -419,6 +423,7 @@ const styles = StyleSheet.create({
   themeCardText: {
     fontSize: 15,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
     textAlign: "center",
   },
@@ -458,6 +463,7 @@ const styles = StyleSheet.create({
   blockTitle: {
     fontSize: 13,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.accent,
     marginBottom: 8,
     textTransform: "uppercase",
@@ -474,6 +480,7 @@ const styles = StyleSheet.create({
   slotLabel: {
     fontSize: 13,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textMuted,
     width: 28,
   },
@@ -483,6 +490,13 @@ const styles = StyleSheet.create({
     marginTop: -4,
     marginBottom: 10,
     marginLeft: 40,
+  },
+  chipRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+    marginLeft: 40,
+    marginBottom: 10,
   },
   empty: {
     textAlign: "center",
@@ -514,6 +528,7 @@ const styles = StyleSheet.create({
   regenerateButtonText: {
     color: colors.accent,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 14,
   },
   confirmButton: {
@@ -525,6 +540,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
 });

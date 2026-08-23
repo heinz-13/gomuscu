@@ -25,7 +25,7 @@ import {
 } from "../services/groupService";
 import type { GroupRankingEntry } from "../services/groupService";
 import { getWeekBounds } from "../services/workoutService";
-import { colors } from "../lib/theme";
+import { colors, eyebrow } from "../lib/theme";
 import type { GroupTopPr, GroupWorkoutSummary, UserSearchResult } from "../lib/types";
 
 type Props = NativeStackScreenProps<MainStackParamList, "GroupDetail">;
@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
   },
   addButton: {
@@ -254,6 +255,7 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: colors.accent,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 13,
   },
   list: {
@@ -268,9 +270,9 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   cardTitle: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: colors.textPrimary,
+    ...eyebrow,
+    fontSize: 12,
+    color: colors.accent,
     marginBottom: 10,
   },
   emptyText: {
@@ -286,6 +288,7 @@ const styles = StyleSheet.create({
   rankPosition: {
     color: colors.accent,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     width: 18,
   },
   rankName: {
@@ -297,10 +300,12 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 13,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   sectionTitle: {
     fontSize: 15,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
     marginBottom: 10,
   },
@@ -316,6 +321,7 @@ const styles = StyleSheet.create({
   summaryName: {
     fontSize: 14,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
   },
   summaryMeta: {
@@ -344,6 +350,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
   },
   input: {
@@ -375,5 +382,6 @@ const styles = StyleSheet.create({
   modalCancelText: {
     color: colors.textMuted,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
 });

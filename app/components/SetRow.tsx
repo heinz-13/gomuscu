@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     fontSize: 15,
     color: colors.textPrimary,
   },
@@ -195,6 +196,7 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     lineHeight: 20,
   },
   input: {
@@ -222,6 +224,7 @@ const styles = StyleSheet.create({
   validateButtonText: {
     color: colors.accentText,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     fontSize: 15,
   },
 });

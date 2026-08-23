@@ -17,4 +17,14 @@ export const colors = {
   highlightText: "#FFFFFF",
 };
 
+// Petite étiquette en capitales espacées, façon "SÉANCE DU JOUR" des maquettes — à spread
+// dans un style de StyleSheet.create() : { ...eyebrow, color: colors.accent, marginBottom: 6 }
+export const eyebrow = {
+  fontSize: 11,
+  fontWeight: "700" as const,
+  fontFamily: "Poppins_700Bold",
+  letterSpacing: 1.2,
+  textTransform: "uppercase" as const,
+};
+
 export const APP_NAME = "GoMuscu";

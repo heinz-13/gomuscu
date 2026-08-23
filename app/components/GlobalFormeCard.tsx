@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../lib/theme";
+import { colors, eyebrow } from "../lib/theme";
 import { computeGlobalForme, formeLabel } from "../services/checkinService";
 import type { DailyCheckin } from "../lib/types";
 
@@ -51,13 +51,15 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   label: {
-    fontSize: 12,
-    color: colors.textMuted,
-    marginBottom: 2,
+    ...eyebrow,
+    fontSize: 10,
+    color: colors.accent,
+    marginBottom: 3,
   },
   value: {
     fontSize: 15,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
   },
   empty: {

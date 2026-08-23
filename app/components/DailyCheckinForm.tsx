@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
   },
   subtitle: {
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
 });

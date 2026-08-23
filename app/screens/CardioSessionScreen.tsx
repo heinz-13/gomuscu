@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
     marginBottom: 8,
   },
@@ -207,12 +208,14 @@ const styles = StyleSheet.create({
   elapsedTime: {
     fontSize: 56,
     fontWeight: "800",
+    fontFamily: "IBMPlexMono_600SemiBold",
     color: colors.textPrimary,
     fontVariant: ["tabular-nums"],
   },
   roundText: {
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
   },
   roundButton: {
@@ -224,6 +227,7 @@ const styles = StyleSheet.create({
   roundButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
   stopButton: {
@@ -236,6 +240,7 @@ const styles = StyleSheet.create({
   stopButtonText: {
     color: colors.textMuted,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   label: {
     fontSize: 13,
@@ -264,6 +269,7 @@ const styles = StyleSheet.create({
   finishButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
 });

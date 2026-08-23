@@ -284,6 +284,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
     marginBottom: 16,
   },
@@ -306,6 +307,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 14,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
     textAlign: "center",
   },
@@ -320,6 +322,7 @@ const styles = StyleSheet.create({
   variantText: {
     color: colors.textPrimary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   label: {
     fontSize: 13,
@@ -349,6 +352,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.textPrimary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   actions: {
     marginTop: "auto",
@@ -373,6 +377,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
 });

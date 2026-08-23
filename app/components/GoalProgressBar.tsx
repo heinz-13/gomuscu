@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.textSecondary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   value: {
     fontSize: 13,
     color: colors.textPrimary,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
   track: {
     height: 8,

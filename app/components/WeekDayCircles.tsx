@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: colors.textMuted,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   circle: {
     width: 36,
@@ -118,5 +119,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textSecondary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
 });

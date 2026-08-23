@@ -87,12 +87,14 @@ const styles = StyleSheet.create({
   phaseLabel: {
     color: colors.accentText,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     fontSize: 16,
     letterSpacing: 2,
   },
   time: {
     color: colors.accentText,
     fontWeight: "800",
+    fontFamily: "IBMPlexMono_600SemiBold",
     fontSize: 56,
     fontVariant: ["tabular-nums"],
   },
@@ -100,6 +102,7 @@ const styles = StyleSheet.create({
     color: colors.accentText,
     fontSize: 15,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     opacity: 0.9,
   },
   pauseButton: {
@@ -112,5 +115,6 @@ const styles = StyleSheet.create({
   pauseButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
 });

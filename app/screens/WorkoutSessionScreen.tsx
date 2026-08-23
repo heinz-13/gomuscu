@@ -393,6 +393,7 @@ const styles = StyleSheet.create({
   photoTitle: {
     fontSize: 20,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textPrimary,
     marginTop: 8,
   },
@@ -414,6 +415,7 @@ const styles = StyleSheet.create({
   photoButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
   skipPhotoText: {
@@ -428,6 +430,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     marginBottom: 16,
     color: colors.textPrimary,
   },
@@ -447,6 +450,7 @@ const styles = StyleSheet.create({
   blockTitle: {
     fontSize: 13,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.accent,
     textTransform: "uppercase",
     letterSpacing: 0.5,
@@ -462,6 +466,7 @@ const styles = StyleSheet.create({
   slotLabel: {
     fontSize: 13,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     color: colors.textMuted,
     width: 28,
   },
@@ -476,6 +481,7 @@ const styles = StyleSheet.create({
   addSetButtonText: {
     color: colors.textSecondary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   addExerciseButton: {
     backgroundColor: colors.surfaceAlt,
@@ -487,6 +493,7 @@ const styles = StyleSheet.create({
   addExerciseButtonText: {
     color: colors.textPrimary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   globalRpeBlock: {
     marginBottom: 20,
@@ -500,6 +507,7 @@ const styles = StyleSheet.create({
   finishButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
 });

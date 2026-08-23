@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.textPrimary,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   empty: {
     padding: 24,
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
   tableWeight: {
     fontSize: 13,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
   },
 });

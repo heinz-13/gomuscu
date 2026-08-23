@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
     marginBottom: 10,
   },
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
   cardDate: {
     fontSize: 13,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
     textTransform: "capitalize",
   },

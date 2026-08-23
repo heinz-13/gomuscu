@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     marginBottom: 16,
     color: colors.textPrimary,
   },
@@ -265,6 +266,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
   },
   email: {
@@ -290,6 +292,7 @@ const styles = StyleSheet.create({
   },
   rowValue: {
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     fontSize: 14,
     color: colors.textPrimary,
   },
@@ -299,6 +302,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 15,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textPrimary,
     marginBottom: 10,
   },
@@ -329,6 +333,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     fontSize: 16,
   },
   logoutButton: {
@@ -346,6 +351,7 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: colors.danger,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
   },
   deleteAccountButton: {
     flexDirection: "row",
@@ -358,6 +364,7 @@ const styles = StyleSheet.create({
   deleteAccountButtonText: {
     color: colors.textMuted,
     fontWeight: "500",
+    fontFamily: "Poppins_500Medium",
     fontSize: 13,
   },
 });

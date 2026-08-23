@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
   },
   tableHeaderText: {
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
     color: colors.textMuted,
     fontSize: 12,
   },

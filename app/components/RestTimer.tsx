@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     color: colors.accentText,
     fontSize: 20,
     fontWeight: "800",
+    fontFamily: "IBMPlexMono_600SemiBold",
     fontVariant: ["tabular-nums"],
   },
   label: {
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
     color: colors.accentText,
     fontSize: 12,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
   skipButton: {
     backgroundColor: colors.accentText,
@@ -116,5 +118,6 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontSize: 12,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
   },
 });

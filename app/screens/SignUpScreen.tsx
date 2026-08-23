@@ -177,12 +177,14 @@ const styles = StyleSheet.create({
   brandName: {
     color: colors.textPrimary,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     fontSize: 18,
     letterSpacing: 0.5,
   },
   title: {
     fontSize: 28,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     marginBottom: 4,
     textAlign: "center",
     color: colors.textPrimary,
@@ -218,6 +220,7 @@ const styles = StyleSheet.create({
     color: colors.accentText,
     fontSize: 16,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
   googleButton: {
     borderWidth: 1,
@@ -231,6 +234,7 @@ const styles = StyleSheet.create({
   googleButtonText: {
     fontSize: 15,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     color: colors.textPrimary,
   },
   link: {

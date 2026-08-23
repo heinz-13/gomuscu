@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "600",
+    fontFamily: "Poppins_600SemiBold",
     marginBottom: 6,
     color: colors.textSecondary,
   },
@@ -76,5 +77,6 @@ const styles = StyleSheet.create({
   buttonTextActive: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
 });

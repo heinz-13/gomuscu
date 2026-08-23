@@ -59,9 +59,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textPrimary,
     fontWeight: "500",
+    fontFamily: "Poppins_500Medium",
   },
   optionTextActive: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
 });

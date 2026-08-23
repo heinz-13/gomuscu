@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "800",
+    fontFamily: "Poppins_800ExtraBold",
     marginBottom: 16,
     color: colors.textPrimary,
   },
@@ -191,6 +192,7 @@ const styles = StyleSheet.create({
   chipTextActive: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
   content: {
     paddingBottom: 48,
@@ -213,6 +215,7 @@ const styles = StyleSheet.create({
   recordValue: {
     fontSize: 28,
     fontWeight: "800",
+    fontFamily: "IBMPlexMono_600SemiBold",
     color: colors.highlight,
   },
 });

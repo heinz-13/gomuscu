@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   chipTextActive: {
     color: colors.accentText,
     fontWeight: "700",
+    fontFamily: "Poppins_700Bold",
   },
   list: {
     paddingBottom: 24,
