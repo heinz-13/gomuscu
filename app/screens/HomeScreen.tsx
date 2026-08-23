@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,6 +20,7 @@ import GoalProgressBar from "../components/GoalProgressBar";
 import WeekDayCircles from "../components/WeekDayCircles";
 import TopPerformanceCard from "../components/TopPerformanceCard";
 import RecentSessionsCarousel from "../components/RecentSessionsCarousel";
+import RecentCardioCarousel from "../components/RecentCardioCarousel";
 import GlobalFormeCard from "../components/GlobalFormeCard";
 import type { DayInfo } from "../components/WeekDayCircles";
 import { useAuthStore } from "../store/authStore";
@@ -37,8 +37,18 @@ import { getTopPerformanceThisWeek } from "../services/progressService";
 import type { TopPerformance } from "../services/progressService";
 import { cancelReminder } from "../services/notificationService";
 import { getTodayCheckin } from "../services/checkinService";
+import { getTodayCardioSession, listCardioSessions } from "../services/cardioService";
 import { colors } from "../lib/theme";
-import type { DailyCheckin, Frequency, Workout } from "../lib/types";
+import type { CardioSession, DailyCheckin, Frequency, Workout } from "../lib/types";
+
+type Mode = "muscu" | "cardio";
+
+const CARDIO_TYPE_LABELS: Record<CardioSession["type"], string> = {
+  fractionne: "Fractionné",
+  bronco: "Bronco test",
+  course_libre: "Course libre",
+  custom: "Cardio sur-mesure",
+};
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<MainTabParamList, "Home">,
@@ -57,22 +67,27 @@ export default function HomeScreen({ navigation }: Props) {
   const profile = useProfileStore((state) => state.profile);
   const insets = useSafeAreaInsets();
 
+  const [mode, setMode] = useState<Mode>("muscu");
   const [todayWorkout, setTodayWorkout] = useState<Workout | null>(null);
+  const [todayCardio, setTodayCardio] = useState<CardioSession | null>(null);
   const [completedThisWeek, setCompletedThisWeek] = useState(0);
   const [weekWorkouts, setWeekWorkouts] = useState<Workout[]>([]);
   const [topPerformance, setTopPerformance] = useState<TopPerformance | null>(null);
   const [recentWorkouts, setRecentWorkouts] = useState<Workout[]>([]);
+  const [recentCardioSessions, setRecentCardioSessions] = useState<CardioSession[]>([]);
   const [checkin, setCheckin] = useState<DailyCheckin | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
-  const [showGenerateChoice, setShowGenerateChoice] = useState(false);
 
   const goal = FREQUENCY_GOALS[profile?.current_frequency ?? "0"] ?? 0;
 
   const loadAll = useCallback((userId: string) => {
     setIsLoading(true);
-    getTodayWorkout(userId)
-      .then(setTodayWorkout)
+    Promise.all([getTodayWorkout(userId), getTodayCardioSession(userId)])
+      .then(([workout, cardio]) => {
+        setTodayWorkout(workout);
+        setTodayCardio(cardio);
+      })
       .catch((error) =>
         Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue")
       )
@@ -82,6 +97,7 @@ export default function HomeScreen({ navigation }: Props) {
     listWeekWorkouts(userId).then(setWeekWorkouts).catch(() => {});
     getTopPerformanceThisWeek(userId).then(setTopPerformance).catch(() => {});
     listWorkouts(userId).then(setRecentWorkouts).catch(() => {});
+    listCardioSessions(userId).then(setRecentCardioSessions).catch(() => {});
     getTodayCheckin(userId).then(setCheckin).catch(() => {});
   }, []);
 
@@ -96,8 +112,14 @@ export default function HomeScreen({ navigation }: Props) {
     if (!session) return;
     setIsStarting(true);
     try {
-      const workout = todayWorkout ?? (await createWorkout(session.user.id));
-      navigation.navigate("WorkoutSession", { workoutId: workout.id });
+      if (mode === "muscu") {
+        const workout = todayWorkout ?? (await createWorkout(session.user.id));
+        navigation.navigate("WorkoutSession", { workoutId: workout.id });
+      } else if (todayCardio) {
+        navigation.navigate("CardioSession", { cardioSessionId: todayCardio.id });
+      } else {
+        navigation.navigate("CardioPreview");
+      }
     } catch (error) {
       Alert.alert("Erreur", error instanceof Error ? error.message : "Erreur inconnue");
     } finally {
@@ -119,7 +141,8 @@ export default function HomeScreen({ navigation }: Props) {
 
   const handleDayPress = (day: DayInfo) => {
     if (!day.workout) {
-      navigation.navigate("WorkoutPreview", { targetDate: day.date });
+      if (mode === "muscu") navigation.navigate("WorkoutPreview", { targetDate: day.date });
+      else navigation.navigate("CardioPreview", { targetDate: day.date });
       return;
     }
 
@@ -165,9 +188,38 @@ export default function HomeScreen({ navigation }: Props) {
 
       <WeekDayCircles workouts={weekWorkouts} onDayPress={handleDayPress} />
 
+      <View style={styles.modeToggle}>
+        <TouchableOpacity
+          style={[styles.modeButton, mode === "muscu" && styles.modeButtonActive]}
+          onPress={() => setMode("muscu")}
+        >
+          <Ionicons
+            name="barbell"
+            size={16}
+            color={mode === "muscu" ? colors.accentText : colors.textMuted}
+          />
+          <Text style={[styles.modeButtonText, mode === "muscu" && styles.modeButtonTextActive]}>
+            Musculation
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.modeButton, mode === "cardio" && styles.modeButtonActive]}
+          onPress={() => setMode("cardio")}
+        >
+          <Ionicons
+            name="heart"
+            size={16}
+            color={mode === "cardio" ? colors.accentText : colors.textMuted}
+          />
+          <Text style={[styles.modeButtonText, mode === "cardio" && styles.modeButtonTextActive]}>
+            Cardio
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       {isLoading ? (
         <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />
-      ) : (
+      ) : mode === "muscu" ? (
         <View style={styles.todayBlock}>
           {todayWorkout ? (
             <WorkoutListItem workout={todayWorkout} onPress={handleStart} />
@@ -195,7 +247,7 @@ export default function HomeScreen({ navigation }: Props) {
 
           <TouchableOpacity
             style={styles.generateButton}
-            onPress={() => setShowGenerateChoice(true)}
+            onPress={() => navigation.navigate("WorkoutPreview")}
           >
             <Ionicons name="sparkles" size={16} color={colors.accent} />
             <Text style={styles.generateButtonText}>
@@ -205,48 +257,59 @@ export default function HomeScreen({ navigation }: Props) {
             </Text>
           </TouchableOpacity>
         </View>
+      ) : (
+        <View style={styles.todayBlock}>
+          {todayCardio ? (
+            <Text style={styles.emptyToday}>
+              Cardio du jour : {CARDIO_TYPE_LABELS[todayCardio.type]}
+            </Text>
+          ) : (
+            <Text style={styles.emptyToday}>
+              Rien de prévu aujourd'hui. Le canapé peut attendre.
+            </Text>
+          )}
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={handleStart}
+            disabled={isStarting}
+          >
+            {isStarting ? (
+              <ActivityIndicator color={colors.accentText} />
+            ) : (
+              <>
+                <Ionicons name="flame" size={18} color={colors.accentText} />
+                <Text style={styles.startButtonText}>
+                  {todayCardio ? "On reprend où t'as flanché" : "GO, plus d'excuses"}
+                </Text>
+              </>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.generateButton}
+            onPress={() => navigation.navigate("CardioPreview")}
+          >
+            <Ionicons name="sparkles" size={16} color={colors.accent} />
+            <Text style={styles.generateButtonText}>
+              {todayCardio
+                ? "Envie d'autre chose ? Génère une nouvelle séance"
+                : "Trop la flemme de choisir ? Génère-moi ça"}
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
 
-      <Modal visible={showGenerateChoice} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Muscu ou cardio ?</Text>
-            <TouchableOpacity
-              style={styles.modalOption}
-              onPress={() => {
-                setShowGenerateChoice(false);
-                navigation.navigate("WorkoutPreview");
-              }}
-            >
-              <Ionicons name="barbell" size={20} color={colors.accent} />
-              <Text style={styles.modalOptionText}>Musculation</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.modalOption}
-              onPress={() => {
-                setShowGenerateChoice(false);
-                navigation.navigate("CardioPreview");
-              }}
-            >
-              <Ionicons name="heart" size={20} color={colors.accent} />
-              <Text style={styles.modalOptionText}>Cardio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.modalCancelButton}
-              onPress={() => setShowGenerateChoice(false)}
-            >
-              <Text style={styles.modalCancelText}>Annuler</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <TopPerformanceCard performance={topPerformance} />
-
-      <RecentSessionsCarousel
-        workouts={recentWorkouts}
-        onPress={(workoutId) => navigation.navigate("WorkoutDetail", { workoutId })}
-      />
+      {mode === "muscu" ? (
+        <>
+          <TopPerformanceCard performance={topPerformance} />
+          <RecentSessionsCarousel
+            workouts={recentWorkouts}
+            onPress={(workoutId) => navigation.navigate("WorkoutDetail", { workoutId })}
+          />
+        </>
+      ) : (
+        <RecentCardioCarousel sessions={recentCardioSessions} />
+      )}
 
       <GlobalFormeCard checkin={checkin} />
     </ScrollView>
@@ -323,46 +386,31 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 14,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    justifyContent: "center",
-    padding: 24,
-  },
-  modalCard: {
-    backgroundColor: colors.surface,
-    borderRadius: 14,
-    padding: 20,
-    gap: 10,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: colors.textPrimary,
-    marginBottom: 6,
-  },
-  modalOption: {
+  modeToggle: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    borderWidth: 1,
-    borderColor: colors.border,
     backgroundColor: colors.surfaceAlt,
     borderRadius: 10,
-    padding: 14,
+    padding: 4,
+    marginBottom: 16,
   },
-  modalOptionText: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: colors.textPrimary,
-  },
-  modalCancelButton: {
+  modeButton: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
+    gap: 6,
     paddingVertical: 10,
-    marginTop: 4,
+    borderRadius: 8,
   },
-  modalCancelText: {
+  modeButtonActive: {
+    backgroundColor: colors.accent,
+  },
+  modeButtonText: {
+    fontSize: 13,
+    fontWeight: "700",
     color: colors.textMuted,
-    fontWeight: "600",
+  },
+  modeButtonTextActive: {
+    color: colors.accentText,
   },
 });

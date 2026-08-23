@@ -178,3 +178,20 @@ export async function listCardioSessions(userId: string): Promise<CardioSession[
   if (error) throw error;
   return data ?? [];
 }
+
+export async function getTodayCardioSession(userId: string): Promise<CardioSession | null> {
+  const today = toLocalDateString(new Date());
+
+  const { data, error } = await supabase
+    .from("cardio_sessions")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("date", today)
+    .eq("status", "planifiee")
+    .order("started_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data;
+}
