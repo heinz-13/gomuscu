@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ACCENT_RGB = "255, 122, 0";
-const MUTED_RGB = "122, 122, 122";
+const MUTED_RGB = "142, 136, 163";
 
 function formatShortDate(date: string): string {
   return new Date(date).toLocaleDateString("fr-FR", {

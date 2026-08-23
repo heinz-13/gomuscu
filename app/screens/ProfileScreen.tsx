@@ -139,6 +139,7 @@ export default function ProfileScreen() {
         <Row
           label="Abonnement"
           value={profile.is_premium ? "Premium (le vrai)" : "Gratuit (radin)"}
+          valueColor={profile.is_premium ? colors.premium : undefined}
         />
       </View>
 
@@ -212,11 +213,19 @@ export default function ProfileScreen() {
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+function Row({
+  label,
+  value,
+  valueColor,
+}: {
+  label: string;
+  value: string;
+  valueColor?: string;
+}) {
   return (
     <View style={styles.row}>
       <Text style={styles.rowLabel}>{label}</Text>
-      <Text style={styles.rowValue}>{value}</Text>
+      <Text style={[styles.rowValue, valueColor && { color: valueColor }]}>{value}</Text>
     </View>
   );
 }
