@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Télécharger GoMuscu</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #5a5a5a;
+    --accent: #FF7A00;
+    --border: #e5e5e5;
+    --surface: #f7f7f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0D0D0D;
+      --text: #f2f2f2;
+      --muted: #a8a8a8;
+      --border: #2a2a2a;
+      --surface: #171717;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 56px 20px 80px;
+    text-align: center;
+  }
+  .icon {
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 6px;
+  }
+  .tagline {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .download-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #1a0800;
+    font-weight: 800;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 16px 28px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 36px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--accent);
+  }
+  .card ol {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .card li {
+    margin-bottom: 6px;
+  }
+  .ios-note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 24px;
+  }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="icon" src="assets/icon.png" alt="Logo GoMuscu">
+  <h1>GoMuscu</h1>
+  <div class="tagline">Pas de pause. Pas d'excuse.</div>
+
+  <a class="download-button" href="https://github.com/heinz-13/gomuscu/releases/download/v1.0.0-preview/gomuscu.apk">
+    ⬇ Télécharger pour Android
+  </a>
+  <div class="note">Version de test — installation directe, hors Play Store</div>
+
+  <div class="card">
+    <h2>Comment installer</h2>
+    <ol>
+      <li>Télécharge le fichier depuis ce téléphone Android (pas depuis un ordinateur)</li>
+      <li>Ouvre le fichier téléchargé</li>
+      <li>Si Android te prévient sur les "sources inconnues", autorise l'installation pour cette fois</li>
+      <li>Ouvre GoMuscu et crée ton compte</li>
+    </ol>
+  </div>
+
+  <div class="ios-note">
+    Pas encore disponible sur iPhone — uniquement Android pour l'instant.
+  </div>
+</div>
+</body>
+</html>
