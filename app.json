@@ -13,7 +13,7 @@
       "bundleIdentifier": "com.heinz13.coachrelou"
     },
     "android": {
-      "package": "com.heinz13.coachrelou",
+      "package": "gomuscu.myapp",
       "adaptiveIcon": {
         "backgroundColor": "#0D0D0D",
         "foregroundImage": "./assets/android-icon-foreground.png",
